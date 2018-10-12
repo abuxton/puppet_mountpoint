@@ -13,7 +13,7 @@ describe 'puppet_mountpoint', type: :define do
       'legacy_rest_auth'  => '/etc/puppetlabs/puppet/auth.conf',
       'hocon_auth'        => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
       'hocon_hash'        => {}
-    }
+    } 
   end
 
   on_supported_os.each do |os, os_facts|
