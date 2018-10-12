@@ -20,7 +20,7 @@
 define puppet_mountpoint(
   String                        $mountpoint     = $title,
   Boolean                       $legacy_auth    = false,
-  Stdlib::Absolutepath          $path           = ,
+  Stdlib::Absolutepath          $path,
   Optional                      $auth_allow     =  '*',
   Optional[Stdlib::IP::Address] $auth_allow_ip  =  undef,
   Optional[Enum[String,Array]]  $hocon_allow    =  '*',
@@ -85,23 +85,23 @@ define puppet_mountpoint(
     }
   }
   ini_setting { "File server setting ${mountpoint} path":
-    ensure  => present,
-    path    => $fileserverconfig,
-    section => $mountpoint,
-    setting => 'path',
-    value   => $path,
-    indent_char    => "\t",
-    indent_width   => 1,
+    ensure       => present,
+    path         => $fileserverconfig,
+    section      => $mountpoint,
+    setting      => 'path',
+    value        => $path,
+    indent_char  => "\t",
+    indent_width => 1,
   }
   ini_setting { "File server setting ${mountpoint} allow":
-    ensure  => present,
-    path    => $fileserverconfig,
-    section => $mountpoint,
-    setting => 'allow',
-    value   => '*',
-    indent_char    => "\t",
-    indent_width   => 1,
-    require => Ini_setting["File server setting ${mountpoint} path"],
+    ensure       => present,
+    path         => $fileserverconfig,
+    section      => $mountpoint,
+    setting      => 'allow',
+    value        => '*',
+    indent_char  => "\t",
+    indent_width => 1,
+    require      => Ini_setting["File server setting ${mountpoint} path"],
   }
 
 }
