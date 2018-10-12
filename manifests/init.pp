@@ -5,28 +5,36 @@
 # @example
 #   puppet_mountpoint { 'namevar': }
 define puppet_mountpoint(
-  String                        $mountpoint     => $title,
-  Boolean                       $legacy_auth    => false,
-  Stdlib::Absolutepath          $path           => '',
-  Optional                      $auth_allow     =>  '*',
-  Optional[Stdlib::IP::Address] $auth_allow_ip  =>  undef,
-  Optional                      $hocon_allow    =>  '*',
+  String                        $mountpoint     = $title,
+  Boolean                       $legacy_auth    = false,
+  Stdlib::Absolutepath          $path           = '',
+  Optional                      $auth_allow     =  '*',
+  Optional[Stdlib::IP::Address] $auth_allow_ip  =  undef,
+  Optional                      $hocon_allow    =  '*',
 ) {
   $fileserverconfig = $settings::fileserverconfig #/etc/puppetlabs/puppet/fileserver.conf
-  $legacy_rest_auth        = $settings::rest_authconfig # /etc/puppetlabs/puppet/auth.conf
-  $hocon_auth = '/etc/puppetlabs/puppetserver/conf.d/auth.conf'
+  $legacy_rest_auth = $settings::rest_authconfig # /etc/puppetlabs/puppet/auth.conf
+  $hocon_auth       = '/etc/puppetlabs/puppetserver/conf.d/auth.conf'
+  $hocon_hash  = { 'match-request' => {
+                          'path' => "^/puppet/v3/file_(content|metadata)s?/${mountpoint}",
+                          'type' => 'regex'
+                          },
+                        'allow'         => $hocon_allow,
+                        'sort-order'    => '400',
+                        'name'          => "Auth setting for ${mountpoint}"
+            }
   if $legacy_auth {
     file_line { "Legacy Auth Path setting comment for ${mountpoint}":
-      ensure              => present,
-      path                => $legacy_rest_auth,
-      line                => "# Allow limited access to files in $path",
-      append_on_no_match  => true,
+      ensure             => present,
+      path               => $legacy_rest_auth,
+      line               => "# Allow limited access to files in ${path}",
+      append_on_no_match => true,
     }
     file_line { "Legacy Auth Path setting for ${mountpoint}":
       ensure  => present,
       path    => $legacy_rest_auth,
-      line  => "path ~ ^/file_(metadata|content)s?/${mountpoint}/",
-      after   => "# Allow limited access to files in $path",
+      line    => "path ~ ^/file_(metadata|content)s?/${mountpoint}/",
+      after   => "# Allow limited access to files in ${path}",
       require => file_line["Legacy Auth Path setting comment for ${mountpoint}"],
     }
     file_line { "Legacy Auth setting ${mountpoint}":
@@ -57,18 +65,11 @@ define puppet_mountpoint(
   }
   else {
 
-    hocon_setting { 'Auth setting for ${mountpoint}':
-      ensure => present,
-      path => $hocon_auth,
+    hocon_setting { "Auth setting for ${mountpoint}":
+      ensure  => present,
+      path    => $hocon_auth,
       setting => 'hash_setting',
-      value => { 'match-request' => {
-                    'path' => "^/puppet/v3/file_(content|metadata)s?/${mountpoint}",
-                    'type' => 'regex'
-                    },
-                  'allow'       => $hocon_allow,
-                  'sort-order'  => '400',
-                  'name'        => "Auth setting for ${mountpoint}"
-                },
+      value   => $hocon_hash,
     }
 
   }
