@@ -2,9 +2,9 @@
   "name": "abuxton-puppet_mountpoint",
   "version": "0.1.0",
   "author": "abuxton",
-  "summary": "",
+  "summary": "Module to manage Puppet fileserver mountpoints",
   "license": "MIT",
-  "source": "",
+  "source": "https://github.com/abuxton/puppet_mountpoint",
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
