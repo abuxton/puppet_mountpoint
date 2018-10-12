@@ -3,8 +3,16 @@ require 'spec_helper'
 describe 'puppet_mountpoint', type: :define do
   let(:title) { 'namevar' }
   let(:params) do
-    { 'mountpoint'    => 'namevar',
-      'path'          => '/tmp/namevar'
+    { 'mountpoint'        => 'namevar',
+      'legacy_auth'       => 'false',
+      'path'              => '/tmp/namevar',
+      'auth_allow_ip'     =>  nil,
+      'auth_allow'        =>  '*',
+      'hocon_allow'       =>  '*',
+      'fileserverconfig'  => 'etc/puppetlabs/puppet/fileserver.conf',
+      'legacy_rest_auth'  => '/etc/puppetlabs/puppet/auth.conf',
+      'hocon_auth'        => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
+      'hocon_hash'        => {}
     }
   end
 
