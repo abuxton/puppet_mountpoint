@@ -4,13 +4,26 @@
 #
 # @example
 #   puppet_mountpoint { 'namevar': }
+#
+# @param mountpoints
+#   The name of the mountpoint being managed, used as $title in all managed resources to provide unique names.
+# @param legacy_auth
+#   Boolean value as weather to manage legacy auth false by default.
+# @param path
+#   valid path to the mountpoint directory, ensure mountpoint directory is accessable to pe-puppet user.
+# @param auth_allow
+#   Auth_allow setting for LEGACY auth
+# @param auth_allow_ip
+#   Auth_allow_ip setting for LEGACY auth
+# @param hocon_allow
+#   Hocon allow settings String or Array[String] Type
 define puppet_mountpoint(
   String                        $mountpoint     = $title,
   Boolean                       $legacy_auth    = false,
   Stdlib::Absolutepath          $path           = ,
   Optional                      $auth_allow     =  '*',
   Optional[Stdlib::IP::Address] $auth_allow_ip  =  undef,
-  Optional                      $hocon_allow    =  '*',
+  Optional[Enum[String,Array]]  $hocon_allow    =  '*',
 ) {
   $fileserverconfig = $settings::fileserverconfig #/etc/puppetlabs/puppet/fileserver.conf
   $legacy_rest_auth = $settings::rest_authconfig # /etc/puppetlabs/puppet/auth.conf
@@ -77,6 +90,8 @@ define puppet_mountpoint(
     section => $mountpoint,
     setting => 'path',
     value   => $path,
+    indent_char    => "\t",
+    indent_width   => 1,
   }
   ini_setting { "File server setting ${mountpoint} allow":
     ensure  => present,
@@ -84,7 +99,9 @@ define puppet_mountpoint(
     section => $mountpoint,
     setting => 'allow',
     value   => '*',
-    require => Ini_setting["File server setting ${mountpoint} path"]
+    indent_char    => "\t",
+    indent_width   => 1,
+    require => Ini_setting["File server setting ${mountpoint} path"],
   }
 
 }
