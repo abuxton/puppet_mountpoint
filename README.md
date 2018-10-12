@@ -1,7 +1,7 @@
 
 # puppet_mountpoint
 
-A defined type to make creating additional Puppet mountpoints easier.
+A defined type to make creating additional Puppet FileServer Mount Points easier https://puppet.com/docs/puppet/6.0/file_serving.html#whats-a-mount-point-in-a-puppet-uri.
 
 read the docs here
 

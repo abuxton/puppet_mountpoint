@@ -7,7 +7,7 @@
 define puppet_mountpoint(
   String                        $mountpoint     = $title,
   Boolean                       $legacy_auth    = false,
-  Stdlib::Absolutepath          $path           = '',
+  Stdlib::Absolutepath          $path           = ,
   Optional                      $auth_allow     =  '*',
   Optional[Stdlib::IP::Address] $auth_allow_ip  =  undef,
   Optional                      $hocon_allow    =  '*',
@@ -64,15 +64,27 @@ define puppet_mountpoint(
     }
   }
   else {
-
     hocon_setting { "Auth setting for ${mountpoint}":
       ensure  => present,
       path    => $hocon_auth,
       setting => 'hash_setting',
       value   => $hocon_hash,
     }
-
   }
-
+  ini_setting { "File server setting ${mountpoint} path":
+    ensure  => present,
+    path    => $fileserverconfig,
+    section => $mountpoint,
+    setting => 'path',
+    value   => $path,
+  }
+  ini_setting { "File server setting ${mountpoint} allow":
+    ensure  => present,
+    path    => $fileserverconfig,
+    section => $mountpoint,
+    setting => 'allow',
+    value   => '*',
+    require => Ini_setting["File server setting ${mountpoint} path"]
+  }
 
 }
