@@ -3,6 +3,8 @@
 ---
 fixtures:
   forge_modules:
-     stdlib:  "puppetlabs/stdlib"
-     inifile: "puppetlabs/inifile"
-     hocon:   "puppetlabs/hocon"
+     "stdlib":  "puppetlabs/stdlib"
+     "inifile": "puppetlabs/inifile"
+     "hocon":   "puppetlabs/hocon"
+  symlinks:
+    "puppet_mountpoint": "#{source_dir}"

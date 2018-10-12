@@ -18,12 +18,12 @@
 # @param hocon_allow
 #   Hocon allow settings String or Array[String] Type
 define puppet_mountpoint(
-  String                        $mountpoint     = $title,
-  Boolean                       $legacy_auth    = false,
-  Stdlib::Absolutepath          $path,
-  Optional                      $auth_allow     =  '*',
-  Optional[Stdlib::IP::Address] $auth_allow_ip  =  undef,
-  Optional[Enum[String,Array]]  $hocon_allow    =  '*',
+  String                          $mountpoint     = $title,
+  Boolean                         $legacy_auth    = false,
+  Stdlib::Absolutepath            $path,
+  Optional                        $auth_allow     =  '*',
+  Optional[Stdlib::IP::Address]   $auth_allow_ip  =  undef,
+  Optional[Variant[String,Array]] $hocon_allow    =  '*',
 ) {
   $fileserverconfig = $settings::fileserverconfig #/etc/puppetlabs/puppet/fileserver.conf
   $legacy_rest_auth = $settings::rest_authconfig # /etc/puppetlabs/puppet/auth.conf
