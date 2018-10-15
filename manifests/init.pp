@@ -92,8 +92,6 @@ define puppet_mountpoint(
     section      => $mountpoint,
     setting      => 'path',
     value        => $path,
-    indent_char  => "\t",
-    indent_width => 1,
   }
   ini_setting { "File server setting ${mountpoint} allow":
     ensure       => present,
@@ -101,8 +99,6 @@ define puppet_mountpoint(
     section      => $mountpoint,
     setting      => 'allow',
     value        => '*',
-    indent_char  => "\t",
-    indent_width => 1,
     require      => Ini_setting["File server setting ${mountpoint} path"],
   }
 
