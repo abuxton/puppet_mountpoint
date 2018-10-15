@@ -10,7 +10,7 @@ describe 'puppet_mountpoint', type: :define do
           'path'              => '/tmp/namevar',
           'auth_allow_ip'     =>  :undef,
           'auth_allow'        =>  '*',
-          'hocon_allow'       =>  '*', }
+          'hocon_allow'       =>  '*' }
       end
 
       it { is_expected.to compile }

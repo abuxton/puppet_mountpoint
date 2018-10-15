@@ -87,19 +87,20 @@ define puppet_mountpoint(
     }
   }
   ini_setting { "File server setting ${mountpoint} path":
-    ensure       => present,
-    path         => $fileserverconfig,
-    section      => $mountpoint,
-    setting      => 'path',
-    value        => $path,
+    ensure            => present,
+    path              => $fileserverconfig,
+    section           => $mountpoint,
+    setting           => 'path',
+    key_val_separator => '',
+    value             => $path,
   }
   ini_setting { "File server setting ${mountpoint} allow":
-    ensure       => present,
-    path         => $fileserverconfig,
-    section      => $mountpoint,
-    setting      => 'allow',
-    value        => '*',
-    require      => Ini_setting["File server setting ${mountpoint} path"],
+    ensure            => present,
+    path              => $fileserverconfig,
+    section           => $mountpoint,
+    setting           => 'allow',
+    key_val_separator => '',
+    value             => '*',
+    require           => Ini_setting["File server setting ${mountpoint} path"],
   }
-
 }
