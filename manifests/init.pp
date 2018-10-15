@@ -91,7 +91,7 @@ define puppet_mountpoint(
     path              => $fileserverconfig,
     section           => $mountpoint,
     setting           => 'path',
-    key_val_separator => '',
+    key_val_separator => '\t',
     value             => $path,
   }
   ini_setting { "File server setting ${mountpoint} allow":
@@ -99,7 +99,7 @@ define puppet_mountpoint(
     path              => $fileserverconfig,
     section           => $mountpoint,
     setting           => 'allow',
-    key_val_separator => '',
+    key_val_separator => '\t',
     value             => '*',
     require           => Ini_setting["File server setting ${mountpoint} path"],
   }
